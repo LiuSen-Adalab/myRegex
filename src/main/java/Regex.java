@@ -13,17 +13,14 @@ public class Regex {
     public NFAGraph nfaGraph;
     public DFAGraph dfaGraph;
 
-
     static Regex compile(String regex) {
         return new Regex(regex);
-
     }
 
     private Regex(String regex) {
         nfaGraph = regex2NFAGraph(regex);
 //        dfaGraph = new DFAGraph();
 //        nfa2dfa();
-
     }
 
     private NFAGraph regex2NFAGraph(String regex) {
@@ -47,18 +44,21 @@ public class Regex {
             } else if (ch == '|') {
                 String remain = reader.getRemain();
                 NFAGraph parallel = regex2NFAGraph(remain);
-                graph.addParallel(parallel);
-                continue;
+
+                if (graph == null) {
+                    System.out.println("正则表达式格式错误！");
+                    break;
+                } else {
+                    graph.addParallel(parallel);
+                }
             }
 
-            if (!edge.equals("\0")) {
-
+            if (!"\0".equals(edge)) {
                 NFAState start = new NFAState();
                 NFAState end = new NFAState();
                 start.addNext(end, edge);
                 NFAGraph newGraph = new NFAGraph(start, end);
                 newGraph.checkRepeat(reader);
-
 
                 if (graph == null) {
                     graph = newGraph;
@@ -176,7 +176,7 @@ public class Regex {
 
         while (!dfaStates.isEmpty()) {
             DFAState state = dfaStates.poll();
-            if (finishedStates.contains(state)){
+            if (finishedStates.contains(state)) {
                 continue;
             }
             for (String edge : allEdges) {

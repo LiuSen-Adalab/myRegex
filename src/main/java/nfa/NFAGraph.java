@@ -3,9 +3,6 @@ package nfa;
 import common.Reader;
 import common.StateType;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class NFAGraph {
     public NFAState start;
     public NFAState end;
@@ -62,7 +59,6 @@ public class NFAGraph {
         start = newStart;
         end = newEnd;
     }
-
 
     private void repeatNTimes(){
         repeatOnePlus();
