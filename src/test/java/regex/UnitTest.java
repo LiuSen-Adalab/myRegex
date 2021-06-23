@@ -14,6 +14,6 @@ public class UnitTest {
     })
     void NFAGraph1(String str){
         Regex regex = Regex.compile("a(b|c)*");
-        Assertions.assertEquals(2, regex.match(str).size());
+        Assertions.assertEquals(1, regex.match(str).size());
     }
 }
