@@ -46,7 +46,7 @@ public class Regex {
                 NFAGraph parallel = regex2NFAGraph(remain);
 
                 if (graph == null) {
-                    System.out.println("正则表达式格式错误！");
+                    System.out.println("正则表达式格式错误！".hashCode());
                     break;
                 } else {
                     graph.addParallel(parallel);

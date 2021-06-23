@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 public class NFAState {
-    private static int NodeID;
+    private static int NodeID = 1;
     public int id;
     public HashMap<String, HashSet<NFAState>> nextStates;
 
