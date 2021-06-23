@@ -1,5 +1,3 @@
-package regex;
-
 import common.Reader;
 import common.StateType;
 import dfa.DFAGraph;
@@ -89,20 +87,17 @@ public class Regex {
             if (visited.contains(node.id)) {
                 continue;
             }
-            node.nextStates.forEach(new BiConsumer<String, HashSet<NFAState>>() {
-                @Override
-                public void accept(String edge, HashSet<NFAState> stateNodes) {
-                    for (NFAState stateNode : stateNodes) {
-                        buffer.append(node.id).append(" - ").append(edge);
-                        buffer.append(" -> ").append(stateNode.id).append("\n");
-                        nodes.add(stateNode);
-                    }
+            node.nextStates.forEach((edge, stateNodes) -> {
+                for (NFAState stateNode : stateNodes) {
+                    buffer.append(node.id).append(" - ").append(edge);
+                    buffer.append(" -> ").append(stateNode.id).append("\n");
+                    nodes.add(stateNode);
                 }
             });
             visited.add(node.id);
         }
 
-        System.out.println(buffer.toString());
+        System.out.println(buffer);
     }
 
     public LinkedList<String> match(String text) {

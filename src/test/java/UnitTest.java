@@ -1,7 +1,4 @@
-package regex;
-
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -10,10 +7,11 @@ public class UnitTest {
 
     @ParameterizedTest(name = "匹配：{0}")
     @CsvSource({
-            "abc", "abcd", "a", "abbbbc",
+            "abc", "abcd", "a", "abbbbc","bb","za"
     })
-    void NFAGraph1(String str){
+    void NFAGraph(String str){
         Regex regex = Regex.compile("a(b|c)*");
-        Assertions.assertEquals(1, regex.match(str).size());
+        int countA = (int) str.chars().filter(c -> c == 97).count();
+        Assertions.assertEquals(countA, regex.match(str).size());
     }
 }

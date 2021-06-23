@@ -5,7 +5,7 @@ jdk:
 sudo: false
 dist: focal
 
-## cache the build tool's caches
-#cache:
-#  directories:
-#    - $HOME/.m2
+# cache the build tool's caches
+cache:
+  directories:
+    - $HOME/.m2
