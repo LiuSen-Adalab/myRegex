@@ -1,3 +1,5 @@
+package regex;
+
 import common.Reader;
 import common.StateType;
 import dfa.DFAGraph;
@@ -13,7 +15,7 @@ public class Regex {
     public NFAGraph nfaGraph;
     public DFAGraph dfaGraph;
 
-    static Regex compile(String regex) {
+    public static Regex compile(String regex) {
         return new Regex(regex);
     }
 
