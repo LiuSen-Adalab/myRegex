@@ -4,15 +4,19 @@ import common.Reader;
 import common.StateType;
 
 public class NFAGraph {
+    final private static char ASTERISK = '*';
+    final private static char PLUS = '+';
+    final private static char QUESTION_MARK = '?';
+
     public NFAState start;
     public NFAState end;
 
-    public NFAGraph(NFAState start, NFAState end){
+    public NFAGraph(NFAState start, NFAState end) {
         this.start = start;
         this.end = end;
     }
 
-    public void addSeries(NFAGraph newGraph){
+    public void addSeries(NFAGraph newGraph) {
         this.end.addNext(newGraph.start, StateType.EPSILON);
         this.end = newGraph.end;
     }
@@ -31,14 +35,14 @@ public class NFAGraph {
         this.end = newEnd;
     }
 
-    public void checkRepeat(Reader reader){
-        if (reader.peek() == '*'){
+    public void checkRepeat(Reader reader) {
+        if (reader.peek() == ASTERISK) {
             reader.next();
-            repeatNTimes();
-        }else if(reader.peek() == '+'){
+            repeatZeroOrMoreThanZero();
+        } else if (reader.peek() == PLUS) {
             reader.next();
-            repeatOnePlus();
-        }else if (reader.peek() == '?'){
+            repeatMoreThanZero();
+        } else if (reader.peek() == QUESTION_MARK) {
             reader.next();
             repeatZeroOrOne();
         }
@@ -48,7 +52,7 @@ public class NFAGraph {
         start.addNext(end, StateType.EPSILON);
     }
 
-    private void repeatOnePlus() {
+    private void repeatMoreThanZero() {
         end.addNext(start, StateType.EPSILON);
 
         NFAState newStart = new NFAState();
@@ -60,8 +64,8 @@ public class NFAGraph {
         end = newEnd;
     }
 
-    private void repeatNTimes(){
-        repeatOnePlus();
+    private void repeatZeroOrMoreThanZero() {
+        repeatMoreThanZero();
         repeatZeroOrOne();
     }
 

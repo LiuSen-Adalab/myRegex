@@ -6,7 +6,6 @@ import nfa.NFAGraph;
 import nfa.NFAState;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 
 public class Regex {
 
@@ -18,12 +17,16 @@ public class Regex {
     }
 
     private Regex(String regex) {
-        nfaGraph = regex2NFAGraph(regex);
+        nfaGraph = regexToNfaGraph(regex);
 //        dfaGraph = new DFAGraph();
 //        nfa2dfa();
     }
 
-    private NFAGraph regex2NFAGraph(String regex) {
+    /**
+     * @param regex 待编译的正则字符串
+     * @return regex 编译后生成的状态机图
+     */
+    private NFAGraph regexToNfaGraph(String regex) {
         Reader reader = new Reader(regex);
         NFAGraph graph = null;
 
@@ -33,17 +36,16 @@ public class Regex {
 
             if (ch == '(') {
                 String subRegex = reader.getSubRegex();
-                NFAGraph subGraph = regex2NFAGraph(subRegex);
+                NFAGraph subGraph = regexToNfaGraph(subRegex);
                 subGraph.checkRepeat(reader);
                 if (graph == null) {
                     graph = subGraph;
                 } else {
                     graph.addSeries(subGraph);
                 }
-                continue;
             } else if (ch == '|') {
                 String remain = reader.getRemain();
-                NFAGraph parallel = regex2NFAGraph(remain);
+                NFAGraph parallel = regexToNfaGraph(remain);
 
                 if (graph == null) {
                     System.out.println("正则表达式格式错误！".hashCode());
@@ -51,9 +53,7 @@ public class Regex {
                 } else {
                     graph.addParallel(parallel);
                 }
-            }
-
-            if (!"\0".equals(edge)) {
+            } else if (!"\0".equals(edge)) {
                 NFAState start = new NFAState();
                 NFAState end = new NFAState();
                 start.addNext(end, edge);
@@ -71,35 +71,11 @@ public class Regex {
         return graph;
     }
 
+
     /**
-     * print all nfa state
+     * @param text 待匹配字符串
+     * @return text 中能匹配当前正则表达式的所有子串，贪婪匹配
      */
-    public void printNFAGraph() {
-        Queue<NFAState> nodes = new LinkedList<>();
-        HashSet<Integer> visited = new HashSet<>();
-        nodes.add(nfaGraph.start);
-        StringBuffer buffer = new StringBuffer();
-
-        while (!nodes.isEmpty()) {
-            NFAState node = nodes.poll();
-
-
-            if (visited.contains(node.id)) {
-                continue;
-            }
-            node.nextStates.forEach((edge, stateNodes) -> {
-                for (NFAState stateNode : stateNodes) {
-                    buffer.append(node.id).append(" - ").append(edge);
-                    buffer.append(" -> ").append(stateNode.id).append("\n");
-                    nodes.add(stateNode);
-                }
-            });
-            visited.add(node.id);
-        }
-
-        System.out.println(buffer);
-    }
-
     public LinkedList<String> match(String text) {
         LinkedList<String> matched = new LinkedList<>();
 
@@ -117,9 +93,12 @@ public class Regex {
         }
 
         return matched;
-
     }
 
+    /**
+     * @param text 待匹配字符串
+     * @return text 是否能完全匹配当前正则表达式
+     */
     public boolean isMatch(String text) {
         return isMatch(nfaGraph.start, text, 0);
     }
@@ -159,7 +138,7 @@ public class Regex {
 
     private void nfa2dfa() {
         HashSet<String> allEdges = getAllNfaEdge(nfaGraph.start);
-        HashSet<NFAState> nfaStates = nfaGraph.start.getAllEState();
+        HashSet<NFAState> nfaStates = nfaGraph.start.getAllState();
 
         if (nfaStates.size() == 0) {
             nfaStates.add(nfaGraph.start);

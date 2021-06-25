@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
+
 public class NFAState {
     private static int NodeID = 1;
     public int id;
@@ -29,11 +30,11 @@ public class NFAState {
         return id;
     }
 
-    public HashSet<NFAState> getAllEState() {
+    public HashSet<NFAState> getAllState() {
         HashSet<NFAState> states = new HashSet<>();
         if (nextStates.containsKey(StateType.EPSILON)) {
             for (NFAState nfaState : nextStates.get(StateType.EPSILON)) {
-                states.addAll(nfaState.getAllEState());
+                states.addAll(nfaState.getAllState());
             }
         }
         return states;

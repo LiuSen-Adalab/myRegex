@@ -3,6 +3,8 @@ package common;
 public class Reader {
     int curPosition;
     char[] input;
+    final static private char RIGHT_BRACKET= ')';
+
     public Reader(String input){
         this.input = input.toCharArray();
     }
@@ -30,7 +32,7 @@ public class Reader {
 
     public String getSubRegex(){
         StringBuilder buffer = new StringBuilder();
-        while (peek() != ')'){
+        while (peek() != RIGHT_BRACKET){
             buffer.append(next());
         }
         next(); // 跳过")"

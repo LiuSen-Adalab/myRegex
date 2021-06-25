@@ -4,8 +4,6 @@ import nfa.NFAState;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Set;
 
 public class DFAGraph {
     HashMap<String, DFAState> allDfaStates = new HashMap<>();
@@ -42,7 +40,7 @@ public class DFAGraph {
             if (nfaState.nextStates.containsKey(edge)){
                 for (NFAState nextStates : nfaState.nextStates.get(edge)) {
                     nfaStates.add(nextStates);
-                    nfaStates.addAll(nextStates.getAllEState());
+                    nfaStates.addAll(nextStates.getAllState());
                 }
             }
         }
