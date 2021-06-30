@@ -36,7 +36,7 @@ public class DFAGraph {
     public DFAState moveTo(DFAState state, String edge){
         HashSet<NFAState> nfaStates = new HashSet<>();
 
-        for (NFAState nfaState : state.allNFAState) {
+        for (NFAState nfaState : state.allNfaState) {
             if (nfaState.nextStates.containsKey(edge)){
                 for (NFAState nextStates : nfaState.nextStates.get(edge)) {
                     nfaStates.add(nextStates);

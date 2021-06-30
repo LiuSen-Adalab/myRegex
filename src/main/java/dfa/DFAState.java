@@ -8,12 +8,12 @@ import java.util.HashSet;
 public class DFAState {
 
     String allIds;
-    HashSet<NFAState> allNFAState;
+    HashSet<NFAState> allNfaState;
     HashMap<String, DFAState> nextStates;
 
-    public DFAState(String allIds, HashSet<NFAState> allNFAState) {
+    public DFAState(String allIds, HashSet<NFAState> allNfaState) {
         this.allIds = allIds;
-        this.allNFAState = allNFAState;
+        this.allNfaState = allNfaState;
     }
 
     public DFAState(){

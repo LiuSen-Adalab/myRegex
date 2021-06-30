@@ -3,10 +3,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+@SuppressWarnings("SpellCheckingInspection")
 class RegexTest {
-    String testPattern = "a(b|c)*";
+    String testPattern = "a(b|c)*a+d?";
     private Regex regex;
 
     @BeforeEach
@@ -23,27 +27,46 @@ class RegexTest {
 
     @ParameterizedTest
     @CsvSource({
-            "a", "ab", "ac", "abb", "abcd", "ba", "bca"
+            "aaaaaa", "abbcca","abbccad", "abcaaa"
     })
-    void match(String str) {
-        int count = (int) str.chars().filter(c -> c == 'a').count();
-        assertEquals(count, regex.match(str).size());
+    void match1(String str) {
+        LinkedList<String> match1 = regex.match(str);
+        assertEquals(1, match1.size());
+        assertEquals(str, match1.poll());
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "abcadabcad", "aaadaa"
+    })
+     void match2(String str) {
+        LinkedList<String> match1 = regex.match(str);
+        assertEquals(2, match1.size());
+    }
+
 
     @Test
     void isMatch() {
-        String[] isMatch = new String[]{
-                "a", "ac", "abc", "abbc"
+        String[] match = new String[]{
+                "abca", "abcad", "abad", "aba", "abaa", "aa", "aaad"
         };
         String[] notMatch = new String[]{
-                "aba", "b", "aa", "abcd", "ba"
+                "bc", "abc", "ad", "abd", "bad"
         };
 
-        for (String item : isMatch) {
-            assertTrue(regex.isMatch(item), "failed: " + item);
+        for (String s : match) {
+            assertTrue(regex.isMatch(s), "failed: " + s);
         }
-        for (String item : notMatch) {
-            assertFalse(regex.isMatch(item), "failed: " + item);
+        for (String s : notMatch) {
+            assertFalse(regex.isMatch(s),"failed: " + s);
         }
+    }
+
+    void abc(){
+        String pattern = "a(b|c)*";
+        String test = "abbbccabc";
+        Regex regex = Regex.compile(testPattern);
+        boolean ismatch = regex.isMatch(test); // false
+        List<String> matchStrs = regex.match(test); // {"abbbcc", "abc"}
     }
 }

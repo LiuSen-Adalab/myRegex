@@ -4,16 +4,18 @@ import common.Reader;
 import common.StateType;
 
 public class NFAGraph {
-    final private static char ASTERISK = '*';
-    final private static char PLUS = '+';
-    final private static char QUESTION_MARK = '?';
-
     public NFAState start;
     public NFAState end;
+    public NFAState cur;
+
+    private static final char ASTERISK = '*';
+    private static final char PLUS = '+';
+    private static final char QUESTION_MARK = '?';
 
     public NFAGraph(NFAState start, NFAState end) {
         this.start = start;
         this.end = end;
+        cur = start;
     }
 
     public void addSeries(NFAGraph newGraph) {
@@ -68,6 +70,4 @@ public class NFAGraph {
         repeatMoreThanZero();
         repeatZeroOrOne();
     }
-
-
 }

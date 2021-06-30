@@ -74,67 +74,55 @@ public class Regex {
 
     /**
      * @param text 待匹配字符串
-     * @return text 中能匹配当前正则表达式的所有子串，贪婪匹配
+     * @return text中能匹配当前正则表达式的所有子串，贪婪匹配，可能导致子串总数变少
      */
     public LinkedList<String> match(String text) {
         LinkedList<String> matched = new LinkedList<>();
-
-        for (int start = 0; start < text.length(); start++) {
-            int end = text.length();
-            while (end != start) {
-                String sub = text.substring(start, end);
-                if (isMatch(sub)) {
-                    matched.addLast(sub);
-                    break;
-                } else {
-                    end -= 1;
-                }
-            }
+        if(text.length() == 0){
+            return matched;
         }
 
+        for (int index = text.length(); index > 0; index--) {
+            if(isMatch(text.substring(0, index))){
+                matched.add(text.substring(0, index));
+                matched.addAll(match(text.substring(index)));
+                break;
+            }
+        }
+        if(matched.isEmpty()){
+            return match(text.substring(1));
+        }
         return matched;
     }
 
+
+
     /**
      * @param text 待匹配字符串
-     * @return text 是否能完全匹配当前正则表达式
+     * @return 待测 text 是否能完全匹配当前正则表达式
      */
     public boolean isMatch(String text) {
-        return isMatch(nfaGraph.start, text, 0);
+        return isMatch(text, nfaGraph.start);
     }
 
-    public boolean isMatch(NFAState curNode, String text, int position) {
-        if (position == text.length()) {
-            for (NFAState nextState : curNode.nextStates.getOrDefault(StateType.EPSILON, new HashSet<>())) {
-                if (isMatch(nextState, text, position)) {
-                    return true;
-                }
-            }
-            return curNode == nfaGraph.end;
+    boolean isMatch(String text, NFAState curState) {
+        if (text.length() == 0) {
+            return hasPathToEnd(curState);
         }
-
-        for (Map.Entry<String, HashSet<NFAState>> entry : curNode.nextStates.entrySet()) {
-            String edge = entry.getKey();
-            if (edge.equals(StateType.EPSILON)) {
-                for (NFAState nextState : entry.getValue()) {
-                    if (isMatch(nextState, text, position)) {
-                        return true;
-                    }
-                }
-            } else {
-                if (edge.equals(String.valueOf(text.charAt(position)))) {
-                    for (NFAState nextState : entry.getValue()) {
-                        if (isMatch(nextState, text, position + 1)) {
-                            return true;
-                        }
-                    }
-                }
-
-            }
-        }
-        return false;
+        String first = text.substring(0, 1);
+        HashSet<NFAState> epsilons = curState.nextStates.get(StateType.EPSILON);
+        return (curState.containNext(first) && isMatch(text.substring(1), curState.getNext(first)))
+                ||
+                (epsilons != null && epsilons.stream().anyMatch(state -> isMatch(text, state)));
     }
 
+    private boolean hasPathToEnd(NFAState curState) {
+        if (curState == nfaGraph.end) {
+            return true;
+        }
+        HashSet<NFAState> nfaStates = curState.nextStates.get(StateType.EPSILON);
+        return nfaStates != null && nfaStates.stream().anyMatch(this::hasPathToEnd);
+    }
 
     private void nfa2dfa() {
         HashSet<String> allEdges = getAllNfaEdge(nfaGraph.start);
@@ -161,8 +149,6 @@ public class Regex {
             }
             finishedStates.add(state);
         }
-
-
     }
 
     private HashSet<String> getAllNfaEdge(NFAState curState) {

@@ -2,9 +2,7 @@ package nfa;
 
 import common.StateType;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 
 public class NFAState {
@@ -40,6 +38,14 @@ public class NFAState {
         return states;
     }
 
+    public boolean containNext(String edge) {
+        return nextStates.containsKey(edge);
+    }
+
+    public boolean containEpsilon(){
+        return nextStates.containsKey(StateType.EPSILON);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -55,5 +61,13 @@ public class NFAState {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    public NFAState getNext(String substring) {
+        return nextStates.get(substring).iterator().next();
+    }
+
+    public Set<NFAState> getEpsilon() {
+        return nextStates.getOrDefault(StateType.EPSILON, (HashSet<NFAState>) Collections.<NFAState>emptySet());
     }
 }
