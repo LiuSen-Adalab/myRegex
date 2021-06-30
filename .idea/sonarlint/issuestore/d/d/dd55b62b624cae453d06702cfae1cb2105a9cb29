@@ -1,0 +1,26 @@
+
+Œ
+java:S1319P"qThe return type of this method should be an interface such as "List" rather than the implementation "LinkedList".(ÂÔ‰ÿÿÿÿÿ
+U
+java:S1155">Use isEmpty() to check whether the collection is empty or not.(¤Îé•
+j
+java:S1104"TMake nfaGraph a static final constant or non-public and provide accessors if needed.(—´ÐØ
+j
+java:S1104"TMake dfaGraph a static final constant or non-public and provide accessors if needed.(óŽŠÒ
+V	java:S125"<This block of commented-out lines of code should be removed.(àÎ×þüÿÿÿÿ
+h
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(ŽŽÿÎ
+S	java:S1064"9Replace this use of System.out or System.err by a logger.(÷ÏŠÁýÿÿÿÿ
+V
+java:S1854`";Remove this useless assignment to local variable "builder".(³¿÷¿ýÿÿÿÿ
+V
+java:S1854b";Remove this useless assignment to local variable "pattern".(÷„ù‘þÿÿÿÿ
+V	java:S125S"<This block of commented-out lines of code should be removed.(÷ª´ ûÿÿÿÿ
+G
+java:S1481b",Remove this unused "pattern" local variable.(÷„ù‘þÿÿÿÿ
+A
+java:S1481a"&Remove this unused "c" local variable.(Õ’¢Åùÿÿÿÿ
+G
+java:S1481`",Remove this unused "builder" local variable.(³¿÷¿ýÿÿÿÿ
+H
+java:S1144‰",Remove this unused private "nfa2dfa" method.(îöüóùÿÿÿÿ

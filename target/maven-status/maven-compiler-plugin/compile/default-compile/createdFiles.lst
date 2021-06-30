@@ -1,0 +1,6 @@
+dfa/DFAState.class
+nfa/NFAState.class
+common/StateType.class
+common/Reader.class
+nfa/NFAGraph.class
+dfa/DFAGraph.class

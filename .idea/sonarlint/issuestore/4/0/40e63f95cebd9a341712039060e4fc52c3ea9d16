@@ -1,0 +1,12 @@
+
+ˆ
+java:S1319"rThe type of the "nextStates" object should be an interface such as "Map" rather than the implementation "HashMap".(ÊÕŠş
+‚
+java:S1319"mThe return type of this method should be an interface such as "Set" rather than the implementation "HashSet".(›´ =
+i
+java:S1104
+"NMake id a static final constant or non-public and provide accessors if needed.(ÍéÌ‘øÿÿÿÿ
+l
+java:S1104"VMake nextStates a static final constant or non-public and provide accessors if needed.(ÊÕŠş
+l
+java:S3008	"QRename this field "NodeID" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¤ŸĞşÿÿÿÿ
